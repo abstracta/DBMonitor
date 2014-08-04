@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="*.bat|.classpath|.project|Documentacion/" kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="Jars/postgresql-8.0-312.jdbc3.jar"/>
+	<classpathentry kind="lib" path="Jars/sqljdbc4.jar"/>
+	<classpathentry kind="lib" path="Jars/jcommon-1.0.22.jar"/>
+	<classpathentry kind="lib" path="Jars/jfreechart-1.0.17.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

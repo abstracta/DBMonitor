@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<!--
+
+	<chart>
+........................................................................................................................
+	- 'name'				R. -> name of the chart. must be the same as that attribute 'name' of 'conector'
+........................................................................................................................
+	- 'intervalBetweenQuery'	R. -> time between query executions
+........................................................................................................................
+	- 'query'				R. -> query to the database
+........................................................................................................................
+	- 'chartUpdateNumber'		R. -> number of times 'graficador' is waked up before it updates the chart. 
+        					Each time the 'monitor' recovers new data (executing the query), it wakes up the 'graficador'.
+        					But the 'graficador' will update the chart just after n times it is waked up. 
+........................................................................................................................
+	- 'chartType'         		R. -> chart type: 'Normal' o 'Diferencias'. 
+						'y' coordenate is the current value or the difference between last value and current value.
+........................................................................................................................
+	- 'paramDefinition'		O. -> definition of parameters: PARAM1 = function(...)[, PARAM2 = function(...)]*
+						parameters are used in the query. Before query execution, the query is "preprocesed". 
+						Parameters are calculated and the values replace the parameter. 
+						Example: 
+							query="SELECT MESSAGE_ID, DelayOfMessage FROM Table WHERE MESSAGE_ID &gt; ${LAST_ID};"
+							paramDefinition="LAST_ID = maxOfColumn(1, 0)" 
+........................................................................................................................
+	- 'maxOfColumn'			-> function: param1 = columnID, param2 = defaultValue/firstValue
+........................................................................................................................
+	- 'xAxisColumnId'			O. -> by default xAxisColumnId is the dateTime when query is executed, 
+						but it can be replaced by a column of the query.
+						when it happens, the column is discarded from the series and used as 'X' axis 
+........................................................................................................................
+	- 'chartBufferSize'		R. -> is the size of the buffer chart. Defines the number of points the chart can show (for each Serie)
+........................................................................................................................
+	- 'skipColumnsInChart'		O. -> allows to skip some columns of the query, uses columnID. 
+						It's a CSV: "1, 3, 4"
+........................................................................................................................
+	-->
+	<!--connectionString = "jdbc:sqlserver://localhost:1433;databaseName=mirthdb;user=mirth;password=mirth"
+	classforname = "com.microsoft.sqlserver.jdbc.SQLServerDriver"> -->
+
+	<chart		
+		name="Channel1"
+		intervalBetweenQuery="2000"
+		query="SELECT top 50 a.[MESSAGE_ID], a.[RECEIVED_DATE], (b.[SEND_DATE] - a.[RECEIVED_DATE]) as 'Delay_IntraChanel', (b.[RESPONSE_DATE] - b.[SEND_DATE]) as 'Delay_OutOfChanel' FROM [mirthdb].[dbo].[D_MM1] a, [mirthdb].[dbo].[D_MM1] b WHERE a.MESSAGE_ID &gt; ${LAST_ID} and a.MESSAGE_ID = b.MESSAGE_ID and a.[STATUS] = 'T' and b.[STATUS] = 'S';"
+		paramDefinition="LAST_ID = maxOfColumn(1, 8)" 
+		skipColumnsInChart="1"
+
+		chartType="Normal"
+
+		xAxisColumnId="2"
+		chartBufferSize="300"
+		chartUpdateNumber = "1">
+	</chart>
+	<connector 	
+		name="Channel1"
+		connectionString = "jdbc:sqlserver://localhost:8053;databaseName=mirthdb;user=mirth;password=mirth"
+		classforname = "com.microsoft.sqlserver.jdbc.SQLServerDriver">
+	</connector>
+
+	<chart		
+		name="Channel2"
+		intervalBetweenQuery="2000"
+		query="SELECT top 50 a.[MESSAGE_ID], a.[RECEIVED_DATE], (b.[SEND_DATE] - a.[RECEIVED_DATE]) as 'Delay_IntraChanel', (b.[RESPONSE_DATE] - b.[SEND_DATE]) as 'Delay_OutOfChanel' FROM [mirthdb].[dbo].[D_MM1] a, [mirthdb].[dbo].[D_MM1] b WHERE a.MESSAGE_ID &gt; ${LAST_ID} and a.MESSAGE_ID = b.MESSAGE_ID and a.[STATUS] = 'T' and b.[STATUS] = 'S';"
+		paramDefinition="LAST_ID = maxOfColumn(1, 0)" 
+		skipColumnsInChart="1"
+
+		chartType="Normal"
+
+		xAxisColumnId="2"
+		chartBufferSize="800"
+		chartUpdateNumber = "1">
+	</chart>
+	<connector 	
+		name="Channel2"
+		connectionString = "jdbc:sqlserver://localhost:8053;databaseName=mirthdb;user=mirth;password=mirth"
+		classforname = "com.microsoft.sqlserver.jdbc.SQLServerDriver">
+	</connector>
+
+<!--
+	<chart		
+		name="Test3"
+		intervalBetweenQuery="2000"
+		query="SELECT top 50 a.[MESSAGE_ID], a.[RECEIVED_DATE], (b.[SEND_DATE] - a.[RECEIVED_DATE]) as 'Delay_IntraChanel', (b.[RESPONSE_DATE] - b.[SEND_DATE]) as 'Delay_OutOfChanel' FROM [mirthdb].[dbo].[D_MM1] a, [mirthdb].[dbo].[D_MM1] b WHERE a.MESSAGE_ID &gt; ${LAST_ID} and a.MESSAGE_ID = b.MESSAGE_ID and a.[STATUS] = 'T' and b.[STATUS] = 'S';"
+		paramDefinition="LAST_ID = maxOfColumn(1, 0)" 
+		skipColumnsInChart="1"
+
+		chartType="Normal"
+
+		xAxisColumnId="2"
+		chartBufferSize="800"
+		chartUpdateNumber = "1">
+	</chart>
+	<connector 	
+		name="Test3"
+		connectionString = "jdbc:sqlserver://localhost:8053;databaseName=mirthdb;user=mirth;password=mirth"
+		classforname = "com.microsoft.sqlserver.jdbc.SQLServerDriver">
+	</connector>
+
+	<chart		
+		name="Test8"
+		intervalBetweenQuery="2000"
+		query="SELECT top 50 a.[MESSAGE_ID], a.[RECEIVED_DATE], (b.[SEND_DATE] - a.[RECEIVED_DATE]) as 'Delay_IntraChanel', (b.[RESPONSE_DATE] - b.[SEND_DATE]) as 'Delay_OutOfChanel' FROM [mirthdb].[dbo].[D_MM1] a, [mirthdb].[dbo].[D_MM1] b WHERE a.MESSAGE_ID &gt; ${LAST_ID} and a.MESSAGE_ID = b.MESSAGE_ID and a.[STATUS] = 'T' and b.[STATUS] = 'S';"
+		paramDefinition="LAST_ID = maxOfColumn(1, 0)" 
+		skipColumnsInChart="1"
+
+		chartType="Normal"
+
+		xAxisColumnId="2"
+		chartBufferSize="800"
+		chartUpdateNumber = "1">
+	</chart>
+	<connector 	
+		name="Test8"
+		connectionString = "jdbc:sqlserver://localhost:8053;databaseName=mirthdb;user=mirth;password=mirth"
+		classforname = "com.microsoft.sqlserver.jdbc.SQLServerDriver">
+	</connector>
+
+	<chart		
+		name="Test9"
+		intervalBetweenQuery="2000"
+		query="SELECT top 50 a.[MESSAGE_ID], a.[RECEIVED_DATE], (b.[SEND_DATE] - a.[RECEIVED_DATE]) as 'Delay_IntraChanel', (b.[RESPONSE_DATE] - b.[SEND_DATE]) as 'Delay_OutOfChanel' FROM [mirthdb].[dbo].[D_MM1] a, [mirthdb].[dbo].[D_MM1] b WHERE a.MESSAGE_ID &gt; ${LAST_ID} and a.MESSAGE_ID = b.MESSAGE_ID and a.[STATUS] = 'T' and b.[STATUS] = 'S';"
+		paramDefinition="LAST_ID = maxOfColumn(1, 0)" 
+		skipColumnsInChart="1"
+
+		chartType="Normal"
+
+		xAxisColumnId="2"
+		chartBufferSize="800"
+		chartUpdateNumber = "1">
+	</chart>
+	<connector 	
+		name="Test9"
+		connectionString = "jdbc:sqlserver://localhost:8053;databaseName=mirthdb;user=mirth;password=mirth"
+		classforname = "com.microsoft.sqlserver.jdbc.SQLServerDriver">
+	</connector>
+
+	<chart		
+		name="Test10"
+		intervalBetweenQuery="2000"
+		query="SELECT top 50 a.[MESSAGE_ID], a.[RECEIVED_DATE], (b.[SEND_DATE] - a.[RECEIVED_DATE]) as 'Delay_IntraChanel', (b.[RESPONSE_DATE] - b.[SEND_DATE]) as 'Delay_OutOfChanel' FROM [mirthdb].[dbo].[D_MM1] a, [mirthdb].[dbo].[D_MM1] b WHERE a.MESSAGE_ID &gt; ${LAST_ID} and a.MESSAGE_ID = b.MESSAGE_ID and a.[STATUS] = 'T' and b.[STATUS] = 'S';"
+		paramDefinition="LAST_ID = maxOfColumn(1, 0)" 
+		skipColumnsInChart="1"
+
+		chartType="Normal"
+
+		xAxisColumnId="2"
+		chartBufferSize="800"
+		chartUpdateNumber = "1">
+	</chart>
+	<connector 	
+		name="Test10"
+		connectionString = "jdbc:sqlserver://localhost:8053;databaseName=mirthdb;user=mirth;password=mirth"
+		classforname = "com.microsoft.sqlserver.jdbc.SQLServerDriver">
+	</connector>
+	
+	<chart		
+		name="Test11"
+		intervalBetweenQuery="2000"
+		query="SELECT top 50 a.[MESSAGE_ID], a.[RECEIVED_DATE], (b.[SEND_DATE] - a.[RECEIVED_DATE]) as 'Delay_IntraChanel', (b.[RESPONSE_DATE] - b.[SEND_DATE]) as 'Delay_OutOfChanel' FROM [mirthdb].[dbo].[D_MM1] a, [mirthdb].[dbo].[D_MM1] b WHERE a.MESSAGE_ID &gt; ${LAST_ID} and a.MESSAGE_ID = b.MESSAGE_ID and a.[STATUS] = 'T' and b.[STATUS] = 'S';"
+		paramDefinition="LAST_ID = maxOfColumn(1, 0)" 
+		skipColumnsInChart="1"
+
+		chartType="Normal"
+
+		xAxisColumnId="2"
+		chartBufferSize="800"
+		chartUpdateNumber = "1">
+	</chart>
+	<connector 	
+		name="Test11"
+		connectionString = "jdbc:sqlserver://localhost:8053;databaseName=mirthdb;user=mirth;password=mirth"
+		classforname = "com.microsoft.sqlserver.jdbc.SQLServerDriver">
+	</connector>
+
+	<chart		
+		name="Test4"
+		intervalBetweenQuery="2000"
+		query="SELECT a.[MESSAGE_ID], a.[RECEIVED_DATE], (b.[SEND_DATE] - a.[RECEIVED_DATE]) as 'Delay_IntraChanel', (b.[RESPONSE_DATE] - b.[SEND_DATE]) as 'Delay_OutOfChanel' FROM [mirthdb].[dbo].[D_MM1] a, [mirthdb].[dbo].[D_MM1] b WHERE a.MESSAGE_ID = b.MESSAGE_ID and a.[STATUS] = 'T' and b.[STATUS] = 'S';"
+
+		chartType="Normal"
+
+		chartBufferSize="800"
+		chartUpdateNumber = "1">
+	</chart>
+	<connector 	
+		name="Test4"
+		connectionString = "jdbc:sqlserver://localhost:8053;databaseName=mirthdb;user=mirth;password=mirth"
+		classforname = "com.microsoft.sqlserver.jdbc.SQLServerDriver">
+	</connector>
+-->
+</config>
